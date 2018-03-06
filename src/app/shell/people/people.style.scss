@@ -1,0 +1,118 @@
+// @Author: Alex Sorafumo <alex.sorafumo>
+// @Date:   12/10/2016 2:02 PM
+// @Email:  alex@yuion.net
+// @Filename: simple.style.scss
+// @Last modified by:   Alex Sorafumo
+// @Last modified time: 03/02/2017 1:58 PM
+
+@import 'shared.styles';
+
+.container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    background-color: rgba(0,0,0,.1);
+}
+
+.topbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3em;
+    background-color: #fff;
+    border-bottom: 1px solid rgba(#000, .12);
+    box-shadow: 0 0 5px 0 rgba(#000, .35);
+    display: flex;
+    align-items: center;
+    padding: .5em;
+    z-index: 102;
+    transition: height 300ms;
+    flex-direction: column;
+    &.show {
+        height: calc(100vh - 5.5em);
+    }
+}
+
+.searchbar {
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(#000, .2);
+    border-radius: 1em;
+    width: 100%;
+    .input {
+        flex: 1;
+    }
+    .icon {
+        font-size: 1.2em;
+        padding: 0 0 0 .5em;
+        height: 1em;
+        &.hover {
+            padding: 0 .5em;
+            color: rgba(#000, .54);
+            cursor: pointer;
+            &:hover {
+                color: rgba(#000, .2);
+            }
+        }
+    }
+    input {
+        border: none;
+        background: none;
+        width: 100%;
+    }
+}
+
+.results {
+    position: relative;
+    flex: 1;
+    width: 100%;
+    overflow: auto;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: .5em;
+    border-bottom: 1px solid rgba(#000, .12);
+    &:last-child {
+        border: none;
+    }
+    .details {
+        flex: 1;
+    }
+    .email {
+        font-size: .8em;
+        color: rgba(#000, .54);
+    }
+}
+
+.content {
+    position: absolute;
+    top: 3em;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.controls {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: .5em .75em;
+    z-index: 100;
+    dropdown {
+        font-size: .8em;
+    }
+}
+
+.map {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    z-index: 99;
+}

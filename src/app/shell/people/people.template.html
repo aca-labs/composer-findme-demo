@@ -1,0 +1,50 @@
+<!--
+@Author: Alex Sorafumo <alex.sorafumo>
+@Date:   12/10/2016 2:02 PM
+@Email:  alex@yuion.net
+@Filename: simple.template.html
+@Last modified by:   Alex Sorafumo
+@Last modified time: 01/02/2017 1:38 PM
+-->
+
+<div class="container">
+    <!-- BINDINGS BEGIN HERE -->
+    <div class="bindings" *ngIf="model.active_level">
+        <div binding [(value)]="model.desk_list" [sys]="model.system" mod="DeskManagement" (valueChange)="updateDeskMarkers()" [bind]="model.active_level.id"></div>
+        <div binding [(value)]="model.user_desk" [sys]="model.system" mod="DeskManagement" (valueChange)="updateDeskMarkers()" [bind]="model.user.win_id"></div>
+        <div binding [(value)]="model.desks" [sys]="model.system" mod="DeskManagement" (valueChange)="updateDeskMarkers()" [bind]="model.active_level.id + ':desk_ids'"></div>
+    </div>
+    <!-- BINDINGS END HERE -->
+    <div class="topbar" [class.show]="model.filtered_users">
+        <div class="searchbar">
+            <div class="icon">
+                <i class="material-icons">search</i>
+            </div>
+            <div class="input">
+                <input [(ngModel)]="model.search" (ngModelChange)="filter()" placeholder="Search for a person...">
+            </div>
+            <div class="icon hover" *ngIf="model.search" (tap)="model.search = ''; filter()">
+                <i class="material-icons">close</i>
+            </div>
+        </div>
+        <div class="results" *ngIf="model.filtered_users">
+            <div class="item" *ngFor="let item of model.filtered_users">
+                <div class="details">
+                    <div class="name">{{item.name}}</div>
+                    <div class="email">{{item.email}}</div>
+                </div>
+                <div class="options">
+                    <btn>Find</btn>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="controls">
+            <dropdown [list]="model.levels" [model]="model.lvl_index" (modelChange)="setLevel(model.levels[$event])" placeholder="Select Level"></dropdown>
+        </div>
+        <div class="map">
+            <map [src]="model.active_level.map_url" [styles]="model.map.styles" [poi]="model.map.poi"></map>
+        </div>
+    </div>
+</div>

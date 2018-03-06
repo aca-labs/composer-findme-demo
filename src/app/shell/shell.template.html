@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="header">
+        <div class="logo flex-1">
+            <img *ngIf="logo.type==='image' || logo.type==='img'" [src]="logo.src">
+            <i *ngIf="logo.type!=='image' && logo.type!=='img'" [class]="logo.src"></i>
+        </div>
+        <div class="heading" *ngIf="model.system">
+            <div binding [(value)]="model.heading" [sys]="model.system" mod="System" bind="name"></div>
+            {{model.heading}}
+        </div>
+        <div class="menu flex-1"></div>
+    </div>
+    <div class="content">
+        <router-outlet></router-outlet>
+    </div>
+    <div class="footer">
+        <div class="copyright">&copy; ACA Projects 2017 &ndash; {{model.year}}</div>
+    </div>
+</div>
