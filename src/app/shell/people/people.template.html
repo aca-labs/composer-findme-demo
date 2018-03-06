@@ -34,7 +34,7 @@
                     <div class="email">{{item.email}}</div>
                 </div>
                 <div class="options">
-                    <btn>Find</btn>
+                    <btn (tapped)="find(item)">Find</btn>
                 </div>
             </div>
         </div>
@@ -42,6 +42,12 @@
     <div class="content">
         <div class="controls">
             <dropdown [list]="model.levels" [model]="model.lvl_index" (modelChange)="setLevel(model.levels[$event])" placeholder="Select Level"></dropdown>
+            <div class="user" *ngIf="model.found_user">
+                <div class="info">
+                    <div class="text">{{model.found_user.name}} is {{ model.found_user.location && model.found_user.location.level ? 'located' : 'not located' }}</div>
+                    <div class="icon" (tap)="clearUser()"><i class="material-icons">close</i></div>
+                </div>
+            </div>
         </div>
         <div class="map">
             <map [src]="model.active_level.map_url" [styles]="model.map.styles" [poi]="model.map.poi"></map>

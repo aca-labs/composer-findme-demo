@@ -12,6 +12,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 import { AppService } from '../../services/app.service';
+import { MapPinComponent, MapRangeComponent } from '@acaprojects/ngx-widgets';
 
 @Component({
     selector: 'people',
@@ -68,6 +69,7 @@ export class PeopleComponent {
     public setLevel(lvl: any) {
         this.model.active_level = lvl;
         this.model.lvl_index = this.model.levels.indexOf(lvl);
+        this.updatePointsOfInterest();
     }
 
     public filter() {
@@ -76,6 +78,30 @@ export class PeopleComponent {
             this.model.filtered_users = list;
         } else {
             this.model.filtered_users = null;
+        }
+    }
+
+    public find(user: any) {
+        if (user) {
+            this.model.found_user = user;
+            this.app_service.Users.location(user.id).then((location) => {
+                this.model.found_user.location = location;
+                console.log('Levels:', this.model.levels, location.level);
+                for (const lvl of this.model.levels) {
+                    if (location.level === lvl.id) {
+                        this.setLevel(lvl);
+                        break;
+                    }
+                }
+                this.updatePointsOfInterest();
+                this.model.search = '';
+                this.filter();
+            }, (err) => {
+                this.model.found_user.location = {};
+                this.updatePointsOfInterest();
+                this.model.search = '';
+                this.filter();
+            });
         }
     }
 
@@ -111,13 +137,30 @@ export class PeopleComponent {
                     }
                 }
                 this.model.map.styles = JSON.parse(JSON.stringify(styles));
+                this.updatePointsOfInterest();
             }
             this.timers.desks = null;
         }, 50);
     }
 
-    public updatePointsOfInterest() {
+    public clearUser() {
+        this.model.found_user = null;
+        this.updatePointsOfInterest();
+    }
 
+    public updatePointsOfInterest() {
+        this.model.map.poi = [];
+        if (this.model.found_user && this.model.found_user.location && this.model.found_user.location.level) {
+            if (this.model.found_user.location.level === this.model.active_level.id) {
+                const loc = this.model.found_user.location;
+                this.model.map.poi.push({
+                    id: loc.map_id || 'person',
+                    cmp: loc.fixed ? MapPinComponent : MapRangeComponent,
+                    coordinates: !loc.fixed ? { x: loc.x, y: loc.y } : null,
+                    data: { text: `${this.model.found_user.name} is here` }
+                });
+            }
+        }
     }
 
 }
