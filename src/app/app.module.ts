@@ -29,7 +29,7 @@ import './shared/mock';
         RouterModule.forRoot(ROUTES, { useHash: true }),
         HttpClientModule,
         FormsModule,
-        ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
+        ServiceWorkerModule.register('__base__ngsw-worker.js', { enabled: environment.production }),
         WidgetsModule.forRoot(),
         ComposerModule.forRoot()
     ],

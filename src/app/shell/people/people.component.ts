@@ -74,9 +74,16 @@ export class PeopleComponent {
 
     public filter() {
         if (this.model.search) {
-            const list = this.app_service.Users.getFilteredUsers(this.model.search);
-            this.model.filtered_users = list;
+            if (this.model.search.length === 1 && !this.model.filtered_users) {
+                this.app_service.Users.search(this.model.search).then((list) => {
+                    this.model.people_list = list || [];
+                    this.model.filtered_users = this.app_service.Users.getFilteredUsers(this.model.search, this.model.people_list);
+                }, (err) => this.model.filtered_users = []);
+            } else {
+                this.model.filtered_users = this.app_service.Users.getFilteredUsers(this.model.search, this.model.people_list);
+            }
         } else {
+            this.model.people_list = [];
             this.model.filtered_users = null;
         }
     }
